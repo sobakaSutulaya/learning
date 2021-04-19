@@ -5,12 +5,31 @@ import "fmt"
 type person struct {
 	firstName string
 	lastName  string
-	contact   contactInfo
+	contactInfo
 }
 
 type contactInfo struct {
 	email   string
 	zipCode int
+}
+
+func (p person) print() {
+	fmt.Printf("%+v", p)
+}
+
+// it is will not work cause Go creates a copy of real value and updated it
+// so : 
+// p := person{firstName: "name", lastName: "lName"}
+// p.changeName("new name")
+// and after that p will have an old name cause of pass by value shit
+// so we should use pointers like in method below
+// func (p person) changeName(newName string) {
+// 	p.firstName = newName
+// }
+
+func (pointerToPerson *person) changeName(newName string) {
+	//pointer to pointer is an actual value
+	(*pointerToPerson).firstName = newName
 }
 
 func main() {
@@ -27,16 +46,19 @@ func main() {
 	notAlex.firstName = "notAlex"
 	notAlex.lastName = "definetly not Andersen"
 
-	fmt.Printf("%+v\n", notAlex)
+	// fmt.Printf("%+v\n", notAlex)
 
 	jim := person{
 		firstName: "Jim",
-		lastName: "Harper",
-		contact: contactInfo{
-			email: "jim.harper@dunder.mifflin.com",
+		lastName:  "Harper",
+		contactInfo: contactInfo{
+			email:   "jim.harper@dunder.mifflin.com",
 			zipCode: 94000,
 		},
 	}
-
-	fmt.Printf("%+v", jim)
+	
+	//jimPointer is a memory address of jim
+	jimPointer := &jim
+	jimPointer.changeName("Jimmy")
+	jim.print()
 }
