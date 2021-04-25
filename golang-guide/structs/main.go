@@ -26,7 +26,6 @@ func (p person) print() {
 // func (p person) changeName(newName string) {
 // 	p.firstName = newName
 // }
-
 func (pointerToPerson *person) changeName(newName string) {
 	//pointer to pointer is an actual value
 	(*pointerToPerson).firstName = newName
@@ -58,7 +57,9 @@ func main() {
 	}
 	
 	//jimPointer is a memory address of jim
-	jimPointer := &jim
-	jimPointer.changeName("Jimmy")
+	// jimPointer := &jim
+	// jimPointer.changeName("Jimmy")
+	// or with receiver of *person we can just do and go take care of it
+	jim.changeName("Jimmy")
 	jim.print()
 }
